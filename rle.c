@@ -1,15 +1,14 @@
 //PGM File RLE Encode and Decode Program
-//by Çağatay Menzil 18011018
 //Irfan View is used to view PGM Files 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//RLE the PGM image---PGM dosyasını sıkıştırma
+//RLE the PGM image---PGM dosyasÃ½nÃ½ sÃ½kÃ½Ã¾tÃ½rma
 int* rlencode(int row,int column,int image[][column]){
 	FILE* encoded;
 	encoded = fopen("encoded.txt", "wb");
 	
-    /* Eğer bütün değerler farklı ise image in 2 katı kadar yer ayrılmalıdır.
+    /* EÃ°er bÃ¼tÃ¼n deÃ°erler farklÃ½ ise image in 2 katÃ½ kadar yer ayrÃ½lmalÃ½dÃ½r.
 	12 13 14 15 -> 1 12 1 13 1 14 1 15  */
     int* dest = (int*)malloc(sizeof(int) * (row * column * 2));
     int i=0,j=0,dest_index=0;
@@ -48,31 +47,31 @@ int* rlencode(int row,int column,int image[][column]){
 	return dest;
 }
 
-//sıkıştırılmış dosyayı açma ve matris haline getirme
+//sÃ½kÃ½Ã¾tÃ½rÃ½lmÃ½Ã¾ dosyayÃ½ aÃ§ma ve matris haline getirme
 void decode(int source[]){
 	int i,j,count,column_count=0;
 	int source_index=2,space=0,sum=0;
 	FILE* decoded_pgm;
 	
 	decoded_pgm = fopen("decoded_pgm.pgm", "wb");
-	//Sihirli Sayı
+	//Sihirli SayÃ½
 	fprintf(decoded_pgm, "P2\n");
-	// Sütun ve satır değerleri
+	// SÃ¼tun ve satÃ½r deÃ°erleri
 	fprintf(decoded_pgm, "%d %d\n", source[0], source[1]);
-	// Maximum değer
+	// Maximum deÃ°er
 	fprintf(decoded_pgm, "255\n");
 	//---------KONTROLLER---------
 	int control = 1;
-	//Kaynak dosyasındaki renklerin sayısının toplamı
+	//Kaynak dosyasÃ½ndaki renklerin sayÃ½sÃ½nÃ½n toplamÃ½
 	for(i=2;i<source[0]*source[1]*2;i+=2){
 		sum+=source[i];
 	}
-	//Toplam satir*sutun sayısına eşit değilse dosya açılmaz
+	//Toplam satir*sutun sayÃ½sÃ½na eÃ¾it deÃ°ilse dosya aÃ§Ã½lmaz
 	if(sum==source[0]*source[1]){
 		printf("This file cannot open-(because of sizes)!\n");
 		control=0;
 	}
-	//0-255 renk aralığı kontrolü
+	//0-255 renk aralÃ½Ã°Ã½ kontrolÃ¼
 	i=3;
 	while(i<source[0]*source[1]*2 && source[i]<256 ) {
 		if(source[i]<256){
@@ -83,15 +82,15 @@ void decode(int source[]){
 			printf("This file cannot open-(because of range of color)!\n");
 		}
 	}
-	//Arka Arkaya Aynı Renk RLE Kontrolü
+	//Arka Arkaya AynÃ½ Renk RLE KontrolÃ¼
 	for(i=3;i<source[0]*source[1]*2;i+=2){
 		if(source[i]==source[i+2]){
 			control=0;
 			printf("This file wasn't encoded correctly!'");
 		}
 	}
-	//En son bütün kontroller doğru ise dosyayı çözümle
-	//decoded_pgm adlı yeni pgm dosyasına yaz
+	//En son bÃ¼tÃ¼n kontroller doÃ°ru ise dosyayÃ½ Ã§Ã¶zÃ¼mle
+	//decoded_pgm adlÃ½ yeni pgm dosyasÃ½na yaz
 	if(control==1){
 		count=source[source_index];
 		while(count>0&&space<source[0]*source[1]){
@@ -113,7 +112,7 @@ void decode(int source[]){
 	}
 	fclose(decoded_pgm);
 }
-//Verilen bir rengin değerini değiştirme
+//Verilen bir rengin deÃ°erini deÃ°iÃ¾tirme
 int* change_acolor_byvalue(int source[]){
 	int first,last,index;
 	printf("Which exist color do you want to change in image?");
@@ -132,7 +131,7 @@ int* change_acolor_byvalue(int source[]){
 	}
 	return source;
 }
-//Koordinatları verilen rengi değiştirme
+//KoordinatlarÃ½ verilen rengi deÃ°iÃ¾tirme
 int* change_acolor_bylocation(int source[]){
 	int row,column,source_index=2;
 	int last,count;
@@ -151,7 +150,7 @@ int* change_acolor_bylocation(int source[]){
 	source[source_index+1]=last;
 	return source;
 }
-//Histogram oluşturma
+//Histogram oluÃ¾turma
 void histogram(int source[]){
 	int count=0,i,j;
 	int sumof_colors[256];
@@ -184,7 +183,7 @@ void histogram(int source[]){
 int main(){
 	int i, j, temp = 0;
 	int row , column ;
-	// !! ÖRNEK RESİMLER !!
+	// !! Ã–RNEK RESÃMLER !!
 	/*int image[13][13] = {
 	{ 15, 15, 15, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
 	{ 15, 15, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31},
@@ -229,11 +228,11 @@ int main(){
 	FILE* pgmimg;
 	pgmimg = fopen("pgmimg.pgm", "wb");
 
-	// Sihirli Sayı
+	// Sihirli SayÃ½
 	fprintf(pgmimg, "P2\n");
-	// Sütun ve satır değerleri
+	// SÃ¼tun ve satÃ½r deÃ°erleri
 	fprintf(pgmimg, "%d %d\n", row, column);
-	// Maximum değer
+	// Maximum deÃ°er
 	fprintf(pgmimg, "255\n");
 	
 	for (i = 0; i < row; i++) {
